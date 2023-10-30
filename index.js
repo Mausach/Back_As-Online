@@ -1,10 +1,9 @@
 const express = require('express')
 //const { dbConeccion } = require('./dataBase/config');
 const sequelize = require('./dataBase/config');
-require('dotenv').config()
+require('dotenv').config();
 const cors= require("cors");
 const app= express();
-
 
 //llamar al servidor
 app.listen(process.env.PORT, ()=>{
