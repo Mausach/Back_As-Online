@@ -9,14 +9,14 @@ const { Op } = require('sequelize');
 
 const crearUsuario = async (req, res) => {
 
-    const {nombre, email, password, rol } = req.body;
+    const {nombreEC, email, password, rol } = req.body;
 
     try {
        //7rae 7odos los usuarios con ese nombre i email (por que son campos unicos en el modelo)
         const user = await Usuario.findOne({
             where: {
               [Op.or]: [
-                { nombre: nombre },
+                { nombre: nombreEC },
                 { email: email }
               ]
             }
@@ -40,15 +40,14 @@ const crearUsuario = async (req, res) => {
          msg: `El rol con nombre ${rol} no se encontró.`,
        });
      }
-
-        
+    
     //encriptacion de contraseñas
     const salt = bcryptjs.genSaltSync(10);
     const hashPassword = bcryptjs.hashSync(password, salt);
 
     // Crea el usuario ia en la DB
     const nuevoUsuario = await Usuario.create({//para sequalize
-      nombre,
+    nombre: nombreEC,
       email,
       password: hashPassword,
     });

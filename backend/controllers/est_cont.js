@@ -120,12 +120,13 @@ const AltaEmpleado = async (req, res) => {
         if (empleadoExistente) {
 
             // Verifica si el empleado ya está asociado a la sucursal
-            const existentEnSuc = await empleadoExistente.hasSucursal(sucuId);
+            const existentEnSuc = await empleadoExistente.hasSucursales(sucuId);
+            
 
             if (!existentEnSuc) {
                 // Asigna la sucursal al empleado si no está asociado
                 const nuevaSuc = await Sucursal.findByPk(sucuId);
-                await empleadoExistente.addSucursal(nuevaSuc);
+                await empleadoExistente.addSucursales(nuevaSuc);
 
                 return res.status(200).json({
                     ok: true,
@@ -158,13 +159,13 @@ const AltaEmpleado = async (req, res) => {
       const nuevoEmp = await Empleado.create(req.body); //o req.bodi creo que funcionaria igual
   
       // Asigna el nuevo rol al usuario usando la relación muchos a muchos
-      await nuevoEmp.addSucursal([nuevaSuc]);
+      await nuevoEmp.addSucursales([nuevaSuc]);
       
       res.status(200).json({
         ok: true,
         id: nuevoEmp.id,
         nombre: nuevoEmp.nombre,
-        msg: `sucusal ${nuevaSuc.nombre} se le a asignado el nuevo empleado ${nuevoEmp.nombre} i se ah dado de alta `,
+        msg: `sucusal ${nuevaSuc.nombre} se le a asignado el nuevo empleado ${nuevoEmp.nombre} y se ah dado de alta `,
       });
 
     } catch (error) {
@@ -249,14 +250,27 @@ const cargarSucursales_x_empresa = async (req, res) => { //carga las empresas de
             },
         });
 
+        if (sucursales.length === 0) {
+            res.status(400).json({
+                ok: false,
+                msg: "no hai Sucursales",
+            });
+
+        }else{
+            res.status(200).json({
+                ok: true,
+                msg: "Sucursales cargadas",
+                sucursales,
+    
+            });
+
+        }
+
+        
+
         //hacer un me7odo que ordene i agrupe las sucursales por sindica7o o id de sindica7o para mandarlos al fron7 i mos7rar
 
-        res.status(200).json({
-            ok: true,
-            msg: "Sucursales cargadas",
-            sucursales,
-
-        });
+        
 
     } catch (error) {
         console.log(error);
