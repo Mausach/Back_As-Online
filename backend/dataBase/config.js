@@ -9,7 +9,30 @@ const { Sequelize } = require('sequelize');
 //console.log('HOST:', process.env.HOST);
 //console.log('DATABASEDIALECT:', process.env.DATABASEDIALECT);
 
+// URL de conexión proporcionada por Render
+const databaseUrl=process.env.RENDER_DB_URL;
+
   // Configuración de conexión a la base de datos
+const sequelize = new Sequelize(
+  //process.env.BASENAME,
+  //process.env.BASEUSER,
+  //process.env.BASEPASS,
+  databaseUrl, {
+    dialect: 'postgres',
+    dialectOptions: {
+      ssl: {
+        require: true, // Habilita SSL
+        rejectUnauthorized: false, // Evita errores de "self signed certificate"
+      },
+    },
+    define: {
+      freezeTableName: true,
+      timestamps: false,
+    },
+});
+
+/*
+  // Configuración de conexión a la base de datos LOCAL
 const sequelize = new Sequelize(
   process.env.BASENAME,
   process.env.BASEUSER,
@@ -21,7 +44,8 @@ const sequelize = new Sequelize(
     timestamps: false, // Si no necesitas marcas de tiempo  
   },
   
-});
+});*/
+
 
 /*
 const dbConeccion = async () => {

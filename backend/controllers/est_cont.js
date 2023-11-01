@@ -253,7 +253,7 @@ const cargarSucursales_x_empresa = async (req, res) => { //carga las empresas de
         if (sucursales.length === 0) {
             res.status(400).json({
                 ok: false,
-                msg: "no hai Sucursales",
+                msg: "No hay sucursales disponibles, diríjase a Menu para dar de alta su sucursal central",
             });
 
         }else{
